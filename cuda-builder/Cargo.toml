@@ -1,0 +1,8 @@
+[package]
+name = "cuda-builder"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+cc = { workspace = true, features = ["parallel"] }
+glob.workspace = true

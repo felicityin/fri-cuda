@@ -1,0 +1,57 @@
+[workspace.package]
+name = "fri-cuda"
+version = "0.1.0"
+edition = "2024"
+
+[workspace]
+members = [
+    "core",
+    "cuda-builder",
+    "cuda-common",
+]
+resolver = "2"
+
+[workspace.dependencies]
+bytesize = "2.0"
+cc = { version = "1.0", default-features = false }
+tracing = "0.1.40"
+metrics = "0.23.0"
+lazy_static = "1.5.0"
+thiserror = "1.0.65"
+glob = "0.3.2"
+itertools = { version = "0.14.0", default-features = false }
+serde = { version = "1.0", default-features = false }
+hashbrown = "0.16.0"
+ctor = "0.5"
+
+p3-field = { git = "https://github.com/ProjectZKM/Plonky3" }
+p3-commit = { git = "https://github.com/ProjectZKM/Plonky3" }
+p3-challenger = { git = "https://github.com/ProjectZKM/Plonky3" }
+p3-dft = { git = "https://github.com/ProjectZKM/Plonky3" }
+p3-fri = { git = "https://github.com/ProjectZKM/Plonky3" }
+p3-koala-bear = { git = "https://github.com/ProjectZKM/Plonky3" }
+p3-matrix = { git = "https://github.com/ProjectZKM/Plonky3" }
+p3-merkle-tree = { git = "https://github.com/ProjectZKM/Plonky3" }
+p3-monty-31 = { git = "https://github.com/ProjectZKM/Plonky3" }
+p3-poseidon2 = { git = "https://github.com/ProjectZKM/Plonky3" }
+p3-symmetric = { git = "https://github.com/ProjectZKM/Plonky3" }
+p3-util = { git = "https://github.com/ProjectZKM/Plonky3" }
+
+cuda-builder = { path = "cuda-builder" }
+cuda-common = { path = "cuda-common" }
+fri-core = { path = "core" }
+
+# For local development.
+# [patch."https://github.com/ProjectZKM/Plonky3.git"]
+# p3-field = { path = "../../zk/patch/Plonky3/field" }
+# p3-challenger = { path = "../../zk/patch/Plonky3/challenger" }
+# p3-commit = { path = "../../zk/patch/Plonky3/commit" }
+# p3-dft = { path = "../../zk/patch/Plonky3/dft" }
+# p3-matrix = { path = "../../zk/patch/Plonky3/matrix" }
+# p3-util = { path = "../../zk/patch/Plonky3/util" }
+# p3-fri = { path = "../../zk/patch/Plonky3/fri" }
+# p3-koala-bear = { path = "../../zk/patch/Plonky3/koala-bear" }
+# p3-merkle-tree = { path = "../../zk/patch/Plonky3/merkle-tree" }
+# p3-monty-31 = { path = "../../zk/patch/Plonky3/monty-31" }
+# p3-poseidon2 = { path = "../../zk/patch/Plonky3/poseidon2" }
+# p3-symmetric = { path = "../../zk/patch/Plonky3/symmetric" }

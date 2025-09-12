@@ -1,0 +1,37 @@
+[package]
+name = "fri-core"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+tracing.workspace = true
+itertools = { workspace = true, features = ["use_std"] }
+serde.workspace = true
+hashbrown.workspace = true
+
+p3-challenger.workspace = true
+p3-commit.workspace = true
+p3-dft.workspace = true
+p3-field.workspace = true
+p3-fri.workspace = true
+p3-koala-bear.workspace = true
+p3-symmetric.workspace = true
+p3-util.workspace = true
+p3-matrix.workspace = true
+p3-merkle-tree.workspace = true
+
+cuda-common.workspace = true
+
+[dev-dependencies]
+rand = "0.8.5"
+rand_chacha = "0.3.1"
+lazy_static = "1.5.0"
+zkm-primitives = { git = "https://github.com/ProjectZKM/Ziren.git" }
+p3-poseidon2.workspace = true
+p3-maybe-rayon = { git = "https://github.com/ProjectZKM/Plonky3" }
+tracing = "0.1.29"
+tracing-appender = "0.2.0"
+tracing-subscriber = { version = "0.3.3" }
+
+[build-dependencies]
+cuda-builder.workspace = true
