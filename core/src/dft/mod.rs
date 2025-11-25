@@ -56,10 +56,13 @@ impl GpuLde {
 
 #[cfg(test)]
 mod tests {
-    use p3_dft::{Radix2Dit, TwoAdicSubgroupDft};
+    use std::time::Instant;
+
+    use p3_dft::{Radix2Dit, Radix2DitParallel, TwoAdicSubgroupDft};
     use p3_field::Field;
     use p3_koala_bear::KoalaBear;
     use p3_matrix::{Matrix, bitrev::BitReversableMatrix, dense::RowMajorMatrix};
+    use rand::{Rng, thread_rng};
     use rand_chacha::{ChaCha20Rng, rand_core::SeedableRng};
 
     use crate::{
@@ -92,5 +95,43 @@ mod tests {
         cpu_lde.values.sort();
         gpu_lde.values.sort();
         assert_eq!(cpu_lde, gpu_lde);
+    }
+
+    #[test]
+    fn test_batch_coset_lde() {
+        let mut rng = thread_rng();
+        let log_degrees = 16..18;
+        let log_blowup = 1;
+        let batch_size = 100;
+
+        let p3_dft = Radix2DitParallel::<KoalaBear>::default();
+
+        for log_d in log_degrees {
+            let d = 1 << log_d;
+            let width = batch_size;
+            let shift = rng.r#gen::<KoalaBear>();
+
+            let mat_h = RowMajorMatrix::rand(&mut rng, d, batch_size);
+
+            let time = Instant::now();
+            let mat_d = transport_matrix_to_device(&mat_h);
+            let lde = GpuLde::new(mat_d, log_blowup, shift);
+            let gpu_time = time.elapsed();
+            println!("Gpu dft time log degree {log_d}: {gpu_time:?}");
+
+            let time = Instant::now();
+            let mut cpu_lde = p3_dft
+                .coset_lde_batch(mat_h, log_blowup, shift)
+                .bit_reverse_rows()
+                .to_row_major_matrix();
+            let cpu_time = time.elapsed();
+            println!("Cpu dft time log degree {log_d}: {cpu_time:?}");
+
+            let h_matrix = transport_device_matrix_to_host(&lde.lde);
+            let mut gpu_lde = RowMajorMatrix::<KoalaBear>::new(h_matrix.values, width);
+            cpu_lde.values.sort();
+            gpu_lde.values.sort();
+            assert_eq!(cpu_lde, gpu_lde);
+        }
     }
 }

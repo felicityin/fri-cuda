@@ -104,7 +104,7 @@ pub(super) fn batch_ntt(
     is_intt: bool,
 ) {
     if log_trace_height == 0 {
-         return;
+        return;
     }
 
     let padded_poly_size = 1 << (log_trace_height + log_blowup);
