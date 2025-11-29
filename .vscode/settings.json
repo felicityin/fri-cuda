@@ -2,6 +2,7 @@
     "files.associations": {
         "*.cu": "cpp",
         "*.cuh": "cpp",
-        "cstdint": "cpp"
+        "cstdint": "cpp",
+        "ios": "cpp"
     }
 }

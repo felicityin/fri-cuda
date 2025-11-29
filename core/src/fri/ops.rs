@@ -286,3 +286,29 @@ pub(crate) fn matrix_evaluate(
 
     Ok(output.to_host().unwrap())
 }
+
+#[cfg(test)]
+mod tests {
+    use cuda_common::{
+        copy::{MemCopyD2H, MemCopyH2D},
+        d_buffer::DeviceBuffer,
+    };
+    use p3_field::FieldAlgebra;
+    use p3_koala_bear::KoalaBear;
+
+    use crate::fri::ops::powers;
+
+    #[test]
+    fn test_powers() {
+        let g = KoalaBear::TWO;
+        let n = 1 << 2;
+
+        let g_invs = DeviceBuffer::<KoalaBear>::with_capacity(n);
+        let d_g_inv = [KoalaBear::TWO].to_device().unwrap();
+        unsafe { powers(&g_invs, &d_g_inv, n as u32).unwrap() };
+        let h_powers = g_invs.to_host().unwrap();
+
+        let powers = g.powers().take(n).collect::<Vec<_>>();
+        assert_eq!(h_powers, powers);
+    }
+}
